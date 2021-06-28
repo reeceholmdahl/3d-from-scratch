@@ -2,10 +2,7 @@ const Plane = require('./geometry/2d/plane.js');
 const RectPrism = require('./geometry/3d/rectangular-prism.js');
 const Quat = require('./math/quaternion.js');
 const Renderer = require('./renderer.js');
-const PosCtrl = require('./physics/position-controller.js');
 const LerpPosCtrl = require('./physics/lerp-position-controller.js');
-const OriCtrl = require('./physics/orientation-controller.js');
-const LerpOriCtrl = require('./physics/lerp-orientation-controller.js');
 const { radians, degrees } = require('./util.js');
 const PhysCtrl = require('./physics/physics-controller.js');
 
@@ -57,22 +54,22 @@ const sketch = (s) => {
         }
     }
 
-    let angle = 0;
+    camera.set(0, radians(-10));
 
     const plane = new Plane(1, 2, 0, 0, 5, Quat.identity);
     
     const rect = new RectPrism(1.5, 1, 0.75, 0, 0, 4, Quat.identity);
     rect.fill = '#2288ff';
     rect.stroke = '#ff0';
-    rect.strokeWeight = 1;
+    rect.strokeWeight = 2;
 
     const cameraPhys = new LerpPosCtrl(camera.position);
     const rectPhys = PhysCtrl.fromGeometry(rect);
 
     rectPhys.vel.set(0, 0, 0);
     rectPhys.acc.set(0, 0, 0);
-    rectPhys.rotationalVel.set(radians(30), radians(60), radians(15));
-    rectPhys.rotationalAcc.set(-radians(10), 0, 0);
+    rectPhys.rotationalVel.set(radians(30), 0, 0);
+    rectPhys.rotationalAcc.set(0, 0, 0);
 
     s.draw = () => {
 
@@ -104,10 +101,10 @@ const sketch = (s) => {
 
         if (s.keyIsDown(81)) {
             // Q
-            vertical = -speed;
+            vertical = speed;
         } else if (s.keyIsDown(69)) {
             // E
-            vertical = speed;
+            vertical = -speed;
         } else {
 
         }
@@ -161,6 +158,12 @@ const sketch = (s) => {
         
         yaw = -dx * radians(90);
         pitch = dy * wh * radians(90);
+
+        if (camera.pitch <= radians(-90) && pitch < 0) {
+            pitch = 0;
+        } else if (camera.pitch >= radians(100) && pitch > 0) {
+            pitch = 0;
+        }
         
         camera.move(yaw, pitch);
     }

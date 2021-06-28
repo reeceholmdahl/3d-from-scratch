@@ -1,16 +1,13 @@
+const { Vector: Vec } = require('p5');
 const AxisAngle = require('./axis-angle.js');
 const Quat = require('./math/quaternion.js');
-
-const p5 = require('p5'),
-    Vec = p5.Vector,
-    utils = require('./util'),
-    UQuat = require('./math/unit-quaternion');
+const { radians } = require('./util.js');
 
 class Camera {
 
-    constructor(position = new Vec(0, 0, 0), fov = utils.radians(70)) {
+    constructor(position = new Vec(0, 0, 0), fov = radians(70)) {
         this.position = position;
-        this.perspective = UQuat.identity;
+        this.perspective = Quat.identity;
 
         this.unitFocalLength = 0;
 
@@ -63,7 +60,7 @@ class Camera {
 
         const localPitch = Vec.mult(this.perspective.rotateVec(new Vec(1, 0, 0)), new Vec(1, 0, -1));
         const pitchChange = AxisAngle.axisAngle(localPitch, pitch);
-        this.perspective = Quat.multiply(this.perspective, pitchChange);
+        this.perspective.append(pitchChange);
 
         this.yaw = yaw;
         this.pitch = pitch;
