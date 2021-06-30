@@ -131,23 +131,11 @@ const sketch = (s) => {
 
         Renderer.addToFrame(rect, plane);
         Renderer.drawFrame(s, camera);
-
-        /**
-         * IDEAS:
-         * Orientation Controller (+ lerp variant)
-         * Physics Controller (merger of position ctrl and orientation ctrl + lerp variant) aka Point Mass
-         * RigidBody Physics Controller (+ lerp variant)
-         * 
-         * this system of controllers and geometries will help keep the rendering and physics sim separate and easy to manage
-         */
     }
 
     s.mousePressed = () => {
         s.requestPointerLock();
     }
-
-    let yaw = 0;
-    let pitch = 0;
 
     s.mouseMoved = () => {
 
@@ -156,8 +144,8 @@ const sketch = (s) => {
 
         const wh = s.windowHeight / s.windowWidth;
         
-        yaw = -dx * radians(90);
-        pitch = dy * wh * radians(90);
+        const yaw = -dx * radians(90);
+        const pitch = dy * wh * radians(90);
 
         if (camera.pitch <= radians(-90) && pitch < 0) {
             pitch = 0;

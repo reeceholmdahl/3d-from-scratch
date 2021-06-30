@@ -13,7 +13,14 @@ build.pipeline.on('file', (file) => {
         console.error(`Transpiling ${file} with babel and browserify...`);
     });
 
-build.transform(babelify)
+build.pipeline.on('error', (err) => {
+    console.error(`Error with build: ${err.message}`);
+})
+
+build.transform(babelify.configure({
+    compact: true,
+    comments: false,
+    }))
     .require('index.js', { entry: true })
     .bundle()
     .pipe(exorcist(MAP_FILE))
