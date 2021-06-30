@@ -5,6 +5,7 @@ const Renderer = require('./renderer.js');
 const LerpPosCtrl = require('./physics/lerp-position-controller.js');
 const { radians, degrees } = require('./util.js');
 const PhysCtrl = require('./physics/physics-controller.js');
+const Testing = require('./testing.js');
 
 const p5 = require('p5'),
     Vec = p5.Vector,
@@ -21,6 +22,8 @@ const sketch = (s) => {
 
     s.setup = () => {
         canvas = s.createCanvas(s.windowWidth, s.windowHeight);
+
+        Testing.test();
     }
 
     s.windowResized = () => {
@@ -33,7 +36,7 @@ const sketch = (s) => {
         lastUpdate: performance.now(),
         accumulator: 0,
         alpha: 0,
-        dt: 1/15,
+        dt: 1/60,
         maxFrameTime: 0.25,
         periodic: (update) => {
             const now = performance.now();
@@ -58,7 +61,7 @@ const sketch = (s) => {
 
     const plane = new Plane(1, 2, 0, 0, 5, Quat.identity);
     
-    const rect = new RectPrism(1.5, 1, 0.75, 0, 0, 4, Quat.identity);
+    const rect = new RectPrism(1.5, 1, 0.75, 0, 0, 4, AxisAngle.yaw(radians(0)));
     rect.fill = '#2288ff';
     rect.stroke = '#ff0';
     rect.strokeWeight = 2;
@@ -68,10 +71,25 @@ const sketch = (s) => {
 
     rectPhys.vel.set(0, 0, 0);
     rectPhys.acc.set(0, 0, 0);
-    rectPhys.rotationalVel.set(radians(30), 0, 0);
+    rectPhys.rotationalVel.set(0, 0, 0);
     rectPhys.rotationalAcc.set(0, 0, 0);
 
+    window.testPoint = () => testPoint;
+
     s.draw = () => {
+
+        if (Testing.isPointInsideRectPrism(testPoint, rect)) {
+            rect.fill = '#0f0';
+            rect.stroke = '#000';
+            rect.strokeWeight = 1;
+        } else {
+            rect.fill = '#2288ff';
+            rect.stroke = '#ff0';
+            rect.strokeWeight = 2;
+        }
+
+        const scrPoint = camera.toUnitScreenSpace(camera.globalToRelative(testPoint)).mult(s.windowWidth, s.windowWidth);
+        scrPoint.add(s.windowWidth / 2, s.windowHeight / 2);
 
         const speed = 10;
         
@@ -120,6 +138,9 @@ const sketch = (s) => {
 
         physics.periodic(dt => {
 
+            // testPoint.x += 0.1 * dt;
+            // testPoint.y -= 0.1 * dt;
+
             rectPhys.integrate(dt);
 
             cameraPhys.integrate(dt);
@@ -131,6 +152,8 @@ const sketch = (s) => {
 
         Renderer.addToFrame(rect, plane);
         Renderer.drawFrame(s, camera);
+
+        s.circle(scrPoint.x, scrPoint.y, 10);
     }
 
     s.mousePressed = () => {
