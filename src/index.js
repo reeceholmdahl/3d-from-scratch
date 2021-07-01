@@ -23,7 +23,7 @@ const sketch = (s) => {
     s.setup = () => {
         canvas = s.createCanvas(s.windowWidth, s.windowHeight);
 
-        Testing.test();
+        // Testing.test();
     }
 
     s.windowResized = () => {
@@ -74,22 +74,7 @@ const sketch = (s) => {
     rectPhys.rotationalVel.set(0, 0, 0);
     rectPhys.rotationalAcc.set(0, 0, 0);
 
-    window.testPoint = () => testPoint;
-
     s.draw = () => {
-
-        if (Testing.isPointInsideRectPrism(testPoint, rect)) {
-            rect.fill = '#0f0';
-            rect.stroke = '#000';
-            rect.strokeWeight = 1;
-        } else {
-            rect.fill = '#2288ff';
-            rect.stroke = '#ff0';
-            rect.strokeWeight = 2;
-        }
-
-        const scrPoint = camera.toUnitScreenSpace(camera.globalToRelative(testPoint)).mult(s.windowWidth, s.windowWidth);
-        scrPoint.add(s.windowWidth / 2, s.windowHeight / 2);
 
         const speed = 10;
         
@@ -138,9 +123,6 @@ const sketch = (s) => {
 
         physics.periodic(dt => {
 
-            // testPoint.x += 0.1 * dt;
-            // testPoint.y -= 0.1 * dt;
-
             rectPhys.integrate(dt);
 
             cameraPhys.integrate(dt);
@@ -152,8 +134,6 @@ const sketch = (s) => {
 
         Renderer.addToFrame(rect, plane);
         Renderer.drawFrame(s, camera);
-
-        s.circle(scrPoint.x, scrPoint.y, 10);
     }
 
     s.mousePressed = () => {

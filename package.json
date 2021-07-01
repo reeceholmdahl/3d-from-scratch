@@ -6,7 +6,7 @@
   "scripts": {
     "pretest": "npm run-script build",
     "test": "node ./project/server.js",
-    "build": "node ./project/build.js",
+    "build": "node ./project/build.js"
   },
   "author": "Reece Holmdahl",
   "license": "ISC",
