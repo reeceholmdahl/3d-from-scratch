@@ -5,7 +5,8 @@
   "main": "./src/index.js",
   "scripts": {
     "test": "node ./project/server.js",
-    "build": "node ./project/build.js"
+    "build": "node ./project/build.js",
+    "setup": "node ./project/setup.js"
   },
   "author": "",
   "license": "ISC",
