@@ -4,11 +4,11 @@
   "description": "",
   "main": "./src/index.js",
   "scripts": {
+    "pretest": "npm run-script build",
     "test": "node ./project/server.js",
     "build": "node ./project/build.js",
-    "setup": "node ./project/setup.js"
   },
-  "author": "",
+  "author": "Reece Holmdahl",
   "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.14.6",

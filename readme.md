@@ -17,3 +17,10 @@ Using the p5js API for interaction and 2D drawing commands to make a 3D engine "
 - Increased experience with linear algebra and differential equation topics used for physics integration and vector manipulation
 - Basic knowledge about 2D and 3D graphics techniques like texture drawing, shading, and lighting
 - Build project management skills
+
+## Test For Yourself
+
+- Clone the project
+- First run `npm install` to download all of the project dependencies
+- Then run `npm run-script test` to build and run the project
+- To change the local server's port, go to `/project/server.js` and change the PORT constant
